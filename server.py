@@ -55,7 +55,12 @@ class S(BaseHTTPRequestHandler):
         f = open('/tmp/soapui-project.xml', 'w')
         print(xml, file=f)
         f.close()
-        p = Popen(['/opt/SoapUI/bin/testrunner.sh',
+        
+        if suite == '*':
+            p = Popen(['/opt/SoapUI/bin/testrunner.sh',
+                   '/tmp/soapui-project.xml'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)
+        else:
+            p = Popen(['/opt/SoapUI/bin/testrunner.sh',
                    '-s"%s"' % suite,
                    '/tmp/soapui-project.xml'], stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)
         try:
